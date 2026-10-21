@@ -1,0 +1,51 @@
+# Generated dependencies, caches and build outputs
+node_modules/
+dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+# Runtime, user documents, database copies and archived validation are never indexed
+storage/
+data/
+tmp_ingest/
+docs/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.log
+# Secrets/private state at every nesting level; keep real configuration local
+.env
+.env.*
+auth.json
+state.json
+config.yaml
+config.yml
+.npmrc
+.netrc
+.pypirc
+*.pem
+*.key
+*.pfx
+*.p12
+**/credentials*/**
+**/secrets*/**
+**/*cookie*/**
+**/private-session*/**
+**/.codex/**
+**/.claude/**
+**/.ssh/**
+**/.aws/**
+**/.azure/**
+.idea/
+.vscode/
+# ---- 本机作业资产 / 内部文档：不进入公开仓库 ----
+AGENTS.md
+PROGRESS.md
+计划书.md
+aoci.txt
+aoci.meta.txt
+aoci.code.txt
+.aoci/

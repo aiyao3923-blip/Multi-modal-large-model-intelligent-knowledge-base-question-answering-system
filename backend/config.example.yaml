@@ -1,0 +1,60 @@
+# 多模态大模型智能知识库问答系统 - 应用配置示例
+#
+# 使用方法：复制为同目录下的 config.yaml，再按需修改。
+#   Copy-Item backend/config.example.yaml backend/config.yaml
+#
+# 安全提醒：
+#   1. config.yaml 已被 .gitignore 排除，不会进入版本库，请勿提交真实配置；
+#   2. 生产/共享环境务必替换 secret_key，并通过环境变量注入更佳：
+#        APP_SECRET_KEY=<随机长字符串>
+#   3. seed.admin_password 仅用于首次初始化管理员账号，首次登录后请立即修改；
+#      也可改用环境变量 APP_SEED_ADMIN_PASSWORD（若你的部署脚本支持）。
+#   4. 生成通道的 API Key 不在本文件中，而是在「系统管理 → 模型通道」里录入，
+#      服务端不会回传完整密钥，也不会写入版本库。
+
+app:
+  name: "多模态大模型智能知识库问答系统"
+  version: "V1.0"
+  host: "0.0.0.0"
+  port: 8001
+
+security:
+  # 必须替换为随机值；可用 `python -c "import secrets;print(secrets.token_urlsafe(48))"` 生成
+  secret_key: "CHANGE-ME-GENERATE-A-RANDOM-48-BYTE-SECRET"
+  token_expire_minutes: 720
+  pbkdf2_iterations: 200000
+
+storage:
+  data_dir: "storage/data"
+  db_name: "app.db"
+  upload_dir: "storage/uploads"
+  vector_dir: "storage/vectors"
+
+seed:
+  admin_username: "admin"
+  # 仅首次初始化生效；请改成强密码，或初始化后立即在界面修改
+  admin_password: "CHANGE-ME-ON-FIRST-RUN"
+
+# 问答/检索默认参数（可在系统参数中覆盖）
+qa:
+  top_k: 8
+  relevance_threshold: 0.35
+  max_context_chunks: 6
+  max_history_rounds: 4
+  degraded_answer_source_top: 3
+
+# 本地论文 RAG 向量模型；模型文件不进版本库，缺失时自动降级为关键词检索。
+# 获取方式见 backend/requirements-embedding-onnx.txt 与 backend/README.md。
+embedding:
+  backend: onnx_e5
+  model_path: storage/models/multilingual-e5-small-onnx-q8
+  threads: 4
+  batch_size: 8
+
+# 仅这三个导入的研究库使用学术检索标签；新建库不受影响
+retrieval:
+  academic_kb_ids: [8, 9, 10]
+
+  academic_relevance:
+    model_identity: 'onnx_e5:e5-prefix-maskmean-l2-charwindows-v1:114b4a645def24fc61f90df7232cead775a6590bc2f58c5c191a7be6265feb1e'
+    min_similarity: 0.85

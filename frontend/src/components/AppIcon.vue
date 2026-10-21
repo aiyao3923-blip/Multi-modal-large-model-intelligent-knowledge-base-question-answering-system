@@ -1,0 +1,53 @@
+<template><svg :width="size" :height="size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="app-icon"><path v-for="(d, i) in paths" :key="i" :d="d" /></svg></template>
+<script setup>
+import { computed } from 'vue'
+const props = defineProps({ name: { type: String, default: 'sparkles' }, size: { type: [Number, String], default: 20 } })
+const icons = {
+  logo: ['m12 3 9 5-9 5-9-5 9-5Z', 'm3 12 9 5 9-5', 'm3 16 9 5 9-5'],
+  grid: ['M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z'],
+  chat: ['M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2V11.5A8.5 8.5 0 0 1 10.5 3h2a8.5 8.5 0 0 1 8.5 8.5Z', 'M7 9h10M7 13h6'],
+  book: ['M12 5v16', 'M12 5C9 2 5 3 2 4v15c4-1 7-1 10 2 3-3 6-3 10-2V4c-3-1-7-2-10 1Z'],
+  folder: ['M3 7V5a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z'],
+  file: ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z', 'M14 2v6h6M8 13h8M8 17h5'],
+  tasks: ['M9 5h12M9 12h12M9 19h12M3 4l1 1 2-2M3 11l1 1 2-2M3 18l1 1 2-2'],
+  feedback: ['M8 10h8M8 14h5', 'M21 12a9 9 0 0 1-9 9H3l1.5-4.5A9 9 0 1 1 21 12Z'],
+  chart: ['M3 3v18h18M7 14l4-5 4 3 5-7'],
+  users: ['M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M16 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.87', 'M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z'],
+  connection: ['m10 13 4-4M8 16l-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0M16 8l2-2a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0'],
+  template: ['M3 3h18v18H3zM3 9h18M9 9v12'],
+  search: ['M21 21l-5-5', 'M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z'],
+  plus: ['M12 5v14M5 12h14'],
+  arrow: ['M5 12h14m-6-6 6 6-6 6'],
+  chevron: ['m9 5 7 7-7 7'],
+  down: ['m6 9 6 6 6-6'],
+  back: ['M19 12H5m6-6-6 6 6 6'],
+  menu: ['M4 6h16M4 12h16M4 18h16'],
+  close: ['m6 6 12 12M6 18 18 6'],
+  send: ['m22 2-7 20-4-9-9-4 20-7Z', 'M22 2 11 13'],
+  upload: ['M12 16V3m-5 5 5-5 5 5M3 16v4a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-4'],
+  download: ['M12 3v13m-5-5 5 5 5-5M3 16v4a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-4'],
+  refresh: ['M20 7A8 8 0 0 0 6 5L3 8M3 3v5h5M4 17a8 8 0 0 0 14 2l3-3M16 16h5v5'],
+  clock: ['M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM12 7v5l3 2'],
+  check: ['m5 12 4 4L19 6'],
+  checkCircle: ['M21 11v1a9 9 0 1 1-5.3-8.2M21 3 12 12l-3-3'],
+  shield: ['M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6l-9-4Z', 'm8 12 3 3 5-6'],
+  sparkles: ['m12 3 2.8 6.2L21 12l-6.2 2.8L12 21l-2.8-6.2L3 12l6.2-2.8L12 3ZM20 2v4M18 4h4'],
+  more: ['M5 12h.01M12 12h.01M19 12h.01'],
+  edit: ['m16 3 5 5M3 21l5-1L21 7a2 2 0 0 0-5-5L3 16v5Z'],
+  trash: ['M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7'],
+  copy: ['M9 9h12v12H9zM5 15H3V3h12v2'],
+  like: ['M7 10v11H3V10h4Zm0 0 5-8a2 2 0 0 1 2 2v6h5a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 2H7'],
+  dislike: ['M7 14V3H3v11h4Zm0 0 5 8a2 2 0 0 0 2-2v-6h5a2 2 0 0 0 2-2l-2-7a2 2 0 0 0-2-2H7'],
+  info: ['M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM12 11v6M12 7h.01'],
+  warning: ['M10.3 3.8 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.8a2 2 0 0 0-3.4 0ZM12 9v4M12 17h.01'],
+  logout: ['M9 21H3V3h6M9 12h12m-4-4 4 4-4 4'],
+  lock: ['M5 10h14v11H5zM8 10V6a4 4 0 0 1 8 0v4'],
+  user: ['M20 21v-2a6 6 0 0 0-6-6h-4a6 6 0 0 0-6 6v2M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z'],
+  globe: ['M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z'],
+  layers: ['m12 3 10 5-10 5L2 8l10-5ZM2 12l10 5 10-5M2 16l10 5 10-5'],
+  bolt: ['m13 2-9 12h7l-1 8 10-12h-7l1-8Z'],
+  external: ['M15 3h6v6M10 14 21 3M21 14v7H3V3h7'],
+}
+const paths = computed(() => icons[props.name] || icons.file)
+</script>
+<style scoped>.app-icon{display:inline-block;flex-shrink:0;vertical-align:middle}</style>
